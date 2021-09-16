@@ -1,0 +1,6 @@
+{
+  "name": "patient-app",
+  "devDependencies": {
+    "@capacitor/cli": "^2.4.5"
+  }
+}

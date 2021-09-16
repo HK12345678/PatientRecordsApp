@@ -1,0 +1,32 @@
+<!-- <ion-list >
+   <h2>Patient List</h2>
+      <ion-item *ngFor="let record of PatientRecordsRetrieved" (click)='openRecDetails(record)'
+      >
+            {{record.FirstName}} {{record.LastName}}
+      </ion-item>
+
+      <ion-button (click) = 'Add()' >Add</ion-button>
+   </ion-list>  -->
+   <ion-content>
+      <ion-list>
+         <ion-title>--Patient List--</ion-title>
+         <ion-item-sliding *ngFor="let record of PatientRecordsRetrieved">
+         <ion-item-options side="start">
+           <button color="danger" (click)="Add()">
+             Add
+           </button>
+         </ion-item-options>
+     
+         <ion-item>
+            {{record.Title}} {{record.FirstName}} {{record.LastName}}
+         </ion-item>
+     
+         <ion-item-options side="end">
+           <button color="tertiary"  (click)="openRecDetails(record)">
+             View
+           </button>
+         </ion-item-options>
+       </ion-item-sliding>
+       <ion-button (click) = 'Add()'>Add</ion-button>
+      </ion-list>
+    </ion-content>
