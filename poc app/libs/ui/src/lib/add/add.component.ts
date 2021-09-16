@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { IPatientRecord, UIActions, UISelector } from '@papp/ipapp/data-access';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'papp-add',
@@ -23,8 +24,10 @@ export class AddComponent implements OnInit {
   //PatientRecordRetrieved = {} as IPatientRecord;
   Form!: FormGroup;
   private id: number;
+  private isButtonVisible = true;
 
-  constructor(private fb: FormBuilder, private route: Router, private store: Store, private routed: ActivatedRoute)
+  constructor(private fb: FormBuilder, private route: Router, private store: Store, private routed: ActivatedRoute,
+    public alertController: AlertController)
   {
     this.id = Number(this.routed.snapshot.paramMap.get('id'));
   }
@@ -38,12 +41,48 @@ export class AddComponent implements OnInit {
 
   Delete()
   {
-    this.store.dispatch(new UIActions.DeletePatientRecord(Number(this.routed.snapshot.paramMap.get('id'))));
-    this.route.navigate(['list']);
+    this.alertController.create({
+      header: 'Confirm Alert',
+      subHeader: 'Confirm',
+      message: 'Are you sure you want to Delete the Record?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.store.dispatch(new UIActions.DeletePatientRecord(Number(this.routed.snapshot.paramMap.get('id'))));
+            this.route.navigate(['list']);
+
+            this.alertController.create({
+              header: 'Deleted',
+              subHeader: '',
+              message: 'Record deleted...',
+              buttons: ['OK']
+            }).then(res => {
+        
+              res.present();
+        
+            });
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+      ]
+    }).then(res => {
+      res.present();
+    });
   }
 
   Save()
   {
+
+        if (this.Form.invalid) {
+          alert('Please verify all input values are proper.');
+            return;
+        }
+
     const newRecord: IPatientRecord = {
       Title: this.Form.get("Title")!.value,
       FirstName: this.Form.get("FirstName")!.value,
@@ -53,30 +92,58 @@ export class AddComponent implements OnInit {
       Active: this.Form.get("Active")!.value,
       ID: this.id};
 
-    if (this.id > 0)
+      if (this.id > 0)
     {
       //debugger;
       this.store.dispatch(new UIActions.EditPatientRecord(newRecord));
+
+      this.alertController.create({
+        header: 'Updated',
+        subHeader: '',
+        message: 'Record updated...',
+        buttons: ['OK']
+      }).then(res => {
+  
+        res.present();
+  
+      });
     }
     else
     {
-      this.store.dispatch(new UIActions.AddPatientRecord(newRecord));
+        this.isButtonVisible = false;
+        this.store.dispatch(new UIActions.AddPatientRecord(newRecord));
+
+        this.alertController.create({
+          header: 'Saved',
+          subHeader: '',
+          message: 'Record Added...',
+          buttons: ['OK']
+        }).then(res => {
+    
+          res.present();
+    
+        });
     } 
+    
+
     this.route.navigate(['list']);
   }
   
   ngOnInit(): void {
+
+    
+
     this.Form = this.fb.group({
       Title: ["", Validators.required],
       FirstName: ["", Validators.required],
       LastName: ["", Validators.required],
       BirthDate: ["", Validators.required],
-      Age: ["", Validators.required],
-      Active: ["", Validators.required],
+      Age: ["", Validators.required, Validators.maxLength(3)],
+      //Active: ["", Validators.required],
+      Active: []
     })
-
-    this.Form.reset();    
-    
+// debugger;
+    this.Form.reset();  
 
     if (this.id > 0)
     {

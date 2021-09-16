@@ -1,37 +1,72 @@
-<form [formGroup]="Form">
+<form [formGroup]="Form" novalidate>
  <ion-content [fullscreen]="true" >
     <ion-list>
        
       <ion-item>
         <ion-label position="floating">Title</ion-label>
-        <ion-select  class="form-control" formControlName="Title"
+        <ion-select  class="form-control" formControlName="Title" required
         cancelText="Nah" okText="Okay!">
           <ion-select-option value="Mr">Mr</ion-select-option>
           <ion-select-option value="Mrs">Mrs</ion-select-option>
           <ion-select-option value="Miss">Miss</ion-select-option>
           <ion-select-option value="Dr">Dr</ion-select-option>
         </ion-select>
+
+        <div *ngIf="Form.controls['Title'].invalid && (Form.controls['Title'].dirty || 
+      Form.controls['Title'].touched)" class="alert alert-danger">
+        <div *ngIf="Form.controls['Title'].errors">
+          *Required
+      </div>
+    </div>
       </ion-item>
       
     <ion-item>
       <ion-label position="floating">First Name</ion-label>
-      <ion-input  class="form-control" formControlName="FirstName" ></ion-input>
+      <ion-input  class="form-control" formControlName="FirstName" placeholder="FirstName" required></ion-input>
+      <div *ngIf="Form.controls['FirstName'].invalid && (Form.controls['FirstName'].dirty || 
+      Form.controls['FirstName'].touched)" class="alert alert-danger">
+        <div *ngIf="Form.controls['FirstName'].errors">
+        *Required
+      </div>
+    </div>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Last Name</ion-label>
-      <ion-input  class="form-control" formControlName="LastName"></ion-input>
+      <ion-input  class="form-control" formControlName="LastName" required></ion-input>
+      <div *ngIf="Form.controls['LastName'].invalid && (Form.controls['LastName'].dirty || 
+      Form.controls['LastName'].touched)" class="alert alert-danger">
+        <div *ngIf="Form.controls['LastName'].errors">
+          *Required
+      </div>
+    </div>
     </ion-item>
+    
     <ion-item>
       <ion-label position="floating"
        >BirthDate</ion-label>
       <ion-datetime 
       class="form-control" formControlName="BirthDate"
-      displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789"></ion-datetime>
+      displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789" required></ion-datetime>
+      <div *ngIf="Form.controls['BirthDate'].invalid && (Form.controls['BirthDate'].dirty || 
+      Form.controls['BirthDate'].touched)" class="alert alert-danger">
+        <div *ngIf="Form.controls['BirthDate'].errors">
+          *Required
+      </div>
+    </div>
     </ion-item>
+    
     <ion-item>
       <ion-label position="floating">Age</ion-label>
-      <ion-input type="number"  class="form-control" formControlName="Age"></ion-input>
-    </ion-item>  
+      <ion-input type="number"  class="form-control" formControlName="Age" required
+      ngModel maxlength="3"></ion-input>
+      <div *ngIf="Form.controls['Age'].invalid && (Form.controls['Age'].dirty || 
+      Form.controls['Age'].touched)" class="alert alert-danger">
+        <div *ngIf="Form.controls['Age'].errors">
+          *Required
+      </div>
+      </div>
+    </ion-item>
+
     <ion-item>
       <ion-label >Active</ion-label>
       <ion-checkbox slot="start" class="form-control" formControlName="Active"></ion-checkbox>
@@ -43,7 +78,7 @@
     </ion-item>
     
     <ion-item >
-      <ion-button (click) = 'Delete()'>Delete</ion-button>
+      <ion-button (click) = 'Delete()'> Delete</ion-button>
     </ion-item>
 
     <ion-item>

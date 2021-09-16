@@ -44,7 +44,7 @@
     "@capacitor/ios": "^2.4.5",
     "@ngrx/schematics": "~12.4.0",
     "@ngrx/store-devtools": "~12.4.0",
-    "@nrwl/angular": "12.8.0",
+    "@nrwl/angular": "^12.8.0",
     "@nrwl/cli": "12.8.0",
     "@nrwl/cypress": "12.8.0",
     "@nrwl/eslint-plugin-nx": "12.8.0",
